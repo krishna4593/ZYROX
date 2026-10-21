@@ -38,3 +38,20 @@ if (!email || !contact || !fullName || !password) {
  sendToken(res, user, "User registered successfully");
 
 }
+
+export const loginController= async(req, res)=>{
+
+    const {email, password}=req.body;
+    if(!email||!password){
+        return res.status(400).json({message:"Email and password are required"})
+    }
+
+    const user= await userModel.findOne({email});
+    if(!user){
+        return res.status(400).json({message:"Invalid email or password"})
+    }
+    if(!user.comparePassword(password)){
+        return res.status(400).json({message:"Invalid email or password"})
+    }
+    sendToken(res, user, "User logged in successfully");
+}

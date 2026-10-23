@@ -26,7 +26,7 @@ const sendToken= ( res, user, message)=>{
 }
 
 export const registerController =async (req, res) => {
-const { email, contact, fullName, password } = req.body;
+const { email, contact, fullName, password, isSeller } = req.body;
 if (!email || !contact || !fullName || !password) {
     return res.status(400).json({ message: "All fields are required" });
   }
@@ -34,7 +34,7 @@ if (!email || !contact || !fullName || !password) {
   if(userExists){
     return res.status(400).json({ message: "User already exists" });
   }
-  const user= await userModel.create({ email, contact, fullName, password });
+  const user= await userModel.create({ email, contact, fullName, password, role: isSeller?"seller":"user"});
  sendToken(res, user, "User registered successfully");
 
 }
